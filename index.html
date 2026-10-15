@@ -1,0 +1,1972 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta
+    name="description"
+    content="V.E.L.A. & P.R.I.S.M.A. - plataforma segura para registro e acompanhamento de denúncias."
+  >
+  <title>V.E.L.A. &amp; P.R.I.S.M.A.</title>
+
+  <style>
+    :root {
+      --primary: #8f78c9;
+      --primary-dark: #66539e;
+      --primary-light: #f0eafd;
+      --secondary: #69b9c3;
+      --secondary-dark: #4d9fa9;
+      --accent-pink: #e8cde2;
+      --accent-blue: #cfe8ed;
+      --danger: #c97891;
+      --danger-light: #fff1f5;
+      --warning: #a78a52;
+      --warning-light: #fff8e9;
+      --success: #5d9b8f;
+      --success-light: #edf8f5;
+      --background: #fbf9fd;
+      --surface: #ffffff;
+      --text: #39354a;
+      --muted: #746f82;
+      --border: #e6dff0;
+      --shadow: 0 12px 34px rgba(111, 91, 151, 0.10);
+      --radius: 18px;
+      --focus: #8f78c9;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Inter, Arial, Helvetica, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, #f3eafd 0, transparent 28rem),
+        radial-gradient(circle at bottom right, #eaf7f8 0, transparent 24rem),
+        var(--background);
+      line-height: 1.55;
+    }
+
+    button,
+    input,
+    select,
+    textarea {
+      font: inherit;
+    }
+
+    button,
+    a {
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    a {
+      color: var(--primary);
+    }
+
+    :focus-visible {
+      outline: 3px solid rgba(143, 120, 201, 0.32);
+      outline-offset: 2px;
+    }
+
+    .skip-link {
+      position: fixed;
+      z-index: 1000;
+      top: -80px;
+      left: 16px;
+      padding: 10px 16px;
+      color: #fff;
+      background: var(--primary-dark);
+      border-radius: 0 0 8px 8px;
+    }
+
+    .skip-link:focus {
+      top: 0;
+    }
+
+    .app-header {
+      position: sticky;
+      z-index: 100;
+      top: 0;
+      border-bottom: 1px solid rgba(230, 223, 240, 0.95);
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(12px);
+    }
+
+    .header-inner {
+      width: min(1180px, calc(100% - 32px));
+      min-height: 72px;
+      margin: auto;
+      display: flex;
+      align-items: center;
+      gap: 22px;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--text);
+      font-weight: 800;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .brand-logo {
+      width: 48px;
+      height: 48px;
+      object-fit: cover;
+      border-radius: 14px;
+      box-shadow: 0 6px 16px rgba(111, 91, 151, 0.14);
+    }
+
+    .main-nav {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin-left: auto;
+    }
+
+    .nav-button {
+      padding: 9px 11px;
+      border: 0;
+      color: var(--text);
+      background: transparent;
+      border-radius: 9px;
+      cursor: pointer;
+    }
+
+    .nav-button:hover,
+    .nav-button.active {
+      color: var(--primary);
+      background: var(--primary-light);
+    }
+
+    .menu-button {
+      display: none;
+      margin-left: auto;
+      padding: 9px 12px;
+      border: 1px solid var(--border);
+      background: #fff;
+      border-radius: 9px;
+      cursor: pointer;
+    }
+
+    .layout {
+      width: min(1180px, calc(100% - 32px));
+      margin: 28px auto 0;
+    }
+
+    .view {
+      display: none;
+      animation: appear 180ms ease-out;
+    }
+
+    .view.active {
+      display: block;
+    }
+
+    @keyframes appear {
+      from {
+        opacity: 0;
+        transform: translateY(4px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .hero {
+      overflow: hidden;
+      position: relative;
+      min-height: 430px;
+      padding: clamp(28px, 5vw, 58px);
+      color: var(--text);
+      background:
+        linear-gradient(120deg, rgba(245, 237, 253, 0.98), rgba(230, 246, 247, 0.96)),
+        var(--surface);
+      border: 1px solid #e8def2;
+      border-radius: 26px;
+      box-shadow: var(--shadow);
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      right: -90px;
+      bottom: -140px;
+      width: 360px;
+      height: 360px;
+      border: 55px solid rgba(143, 120, 201, 0.10);
+      border-radius: 50%;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 170px;
+      align-items: center;
+      gap: clamp(28px, 5vw, 58px);
+      max-width: 1050px;
+    }
+
+    .hero-logo {
+      display: block;
+      width: min\(420px, 42vw\);
+      height: auto;
+      object-fit: contain;
+      border-radius: 36px;
+      filter: drop-shadow(0 12px 24px rgba(111, 91, 151, 0.14));
+    }
+
+    .hero-text {
+      min-width: 0;
+    }
+
+    .eyebrow {
+      margin: 0 0 9px;
+      color: var(--primary-dark);
+      font-size: 0.82rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .hero h1 {
+      max-width: 690px;
+      margin: 0;
+      font-size: clamp(2rem, 5vw, 3.8rem);
+      line-height: 1.08;
+    }
+
+    .hero p {
+      max-width: 650px;
+      color: #5e596d;
+      font-size: 1.08rem;
+    }
+
+    .hero-actions,
+    .inline-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 22px;
+    }
+
+    .button {
+      display: inline-flex;
+      min-height: 43px;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 17px;
+      border: 1px solid transparent;
+      color: #fff;
+      background: var(--primary);
+      border-radius: 10px;
+      font-weight: 700;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .button:hover {
+      filter: brightness(0.95);
+    }
+
+    .button-light {
+      color: var(--primary-dark);
+      background: #ffffff;
+      border-color: #e3d9ef;
+    }
+
+    .button-outline-light {
+      border-color: rgba(255, 255, 255, 0.55);
+      color: #fff;
+      background: transparent;
+    }
+
+    .button-secondary {
+      background: var(--secondary-dark);
+    }
+
+    .button-muted {
+      color: var(--text);
+      background: #efeff5;
+    }
+
+    .button-danger {
+      background: var(--danger);
+    }
+
+    .button-small {
+      min-height: 35px;
+      padding: 6px 11px;
+      font-size: 0.87rem;
+    }
+
+    .section {
+      margin-top: 30px;
+    }
+
+    .section-title,
+    .page-title {
+      margin: 0 0 8px;
+    }
+
+    .section-description,
+    .page-description,
+    .muted {
+      color: var(--muted);
+    }
+
+    .feature-grid,
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .stats-grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .card,
+    .stat-card {
+      padding: 22px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .card h2,
+    .card h3,
+    .card h4 {
+      margin-top: 0;
+    }
+
+    .feature-icon {
+      display: grid;
+      width: 46px;
+      height: 46px;
+      margin-bottom: 14px;
+      place-items: center;
+      color: var(--primary);
+      background: var(--primary-light);
+      border-radius: 13px;
+      font-size: 1.35rem;
+      font-weight: 800;
+    }
+
+    .stat-card strong {
+      display: block;
+      color: var(--primary);
+      font-size: 2rem;
+      line-height: 1.1;
+    }
+
+    .stat-card span {
+      color: var(--muted);
+    }
+
+    .form-card {
+      max-width: 900px;
+      margin: auto;
+    }
+
+    .steps-indicator {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 26px 0 30px;
+    }
+
+    .step-indicator {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      color: var(--muted);
+      font-size: 0.92rem;
+      white-space: nowrap;
+    }
+
+    .step-indicator span {
+      display: grid;
+      width: 34px;
+      height: 34px;
+      place-items: center;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      background: #fff;
+      border-radius: 50%;
+      font-weight: 800;
+    }
+
+    .step-indicator.active {
+      color: var(--primary);
+    }
+
+    .step-indicator.active span {
+      color: #fff;
+      background: var(--primary);
+      border-color: var(--primary);
+    }
+
+    .step-line {
+      flex: 1;
+      height: 2px;
+      background: var(--border);
+    }
+
+    .report-step {
+      padding-top: 4px;
+    }
+
+    .report-step h2 {
+      margin: 0 0 6px;
+      color: var(--primary-dark);
+      font-size: 1.25rem;
+    }
+
+    .nested-fields {
+      margin-top: 8px;
+      padding: 18px;
+      border: 1px solid var(--border);
+      background: #fcfaff;
+      border-radius: 14px;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0 16px;
+    }
+
+    .full-column {
+      grid-column: 1 / -1;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 700;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      padding: 11px 12px;
+      border: 1px solid #d9d1e5;
+      color: var(--text);
+      background: #fff;
+      border-radius: 9px;
+    }
+
+    input,
+    select {
+      min-height: 44px;
+    }
+
+    textarea {
+      min-height: 130px;
+      resize: vertical;
+    }
+
+    .field {
+      margin-bottom: 16px;
+    }
+
+    .checkbox-field {
+      display: flex;
+      align-items: flex-start;
+      gap: 9px;
+      font-weight: 500;
+    }
+
+    .checkbox-field input {
+      flex: 0 0 auto;
+      width: auto;
+      min-height: 0;
+      margin-top: 5px;
+    }
+
+    .alert {
+      padding: 15px 17px;
+      margin: 16px 0;
+      border-left: 4px solid;
+      border-radius: 10px;
+    }
+
+    .alert-warning {
+      border-color: var(--warning);
+      color: #684900;
+      background: var(--warning-light);
+    }
+
+    .alert-danger {
+      border-color: var(--danger);
+      color: #8e2130;
+      background: var(--danger-light);
+    }
+
+    .alert-success {
+      border-color: var(--success);
+      color: #105c35;
+      background: var(--success-light);
+    }
+
+    .protocol-result {
+      display: none;
+      margin-top: 20px;
+    }
+
+    .protocol-result.visible {
+      display: block;
+    }
+
+    .protocol-code {
+      display: inline-block;
+      padding: 8px 12px;
+      border: 1px dashed var(--success);
+      background: #fff;
+      border-radius: 8px;
+      font-family: Consolas, monospace;
+      font-size: 1.1rem;
+      font-weight: 800;
+    }
+
+    .search-box,
+    .filter-bar {
+      display: flex;
+      align-items: flex-end;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .search-box .field,
+    .filter-bar .field {
+      flex: 1 1 180px;
+      margin-bottom: 0;
+    }
+
+    .case-summary {
+      display: none;
+      margin-top: 18px;
+    }
+
+    .case-summary.visible {
+      display: block;
+    }
+
+    .timeline {
+      padding: 0;
+      margin: 22px 0 0;
+      list-style: none;
+    }
+
+    .timeline li {
+      position: relative;
+      margin-left: 9px;
+      padding: 0 0 23px 27px;
+      border-left: 2px solid #ddd4eb;
+    }
+
+    .timeline li::before {
+      content: "";
+      position: absolute;
+      top: 2px;
+      left: -7px;
+      width: 12px;
+      height: 12px;
+      background: var(--primary);
+      border: 2px solid #fff;
+      border-radius: 50%;
+      box-shadow: 0 0 0 2px var(--primary);
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 9px;
+      color: var(--primary-dark);
+      background: var(--primary-light);
+      border-radius: 999px;
+      font-size: 0.82rem;
+      font-weight: 800;
+    }
+
+    .pill-danger {
+      color: #8f1f2d;
+      background: var(--danger-light);
+    }
+
+    .pill-warning {
+      color: #725000;
+      background: var(--warning-light);
+    }
+
+    .pill-success {
+      color: #105c35;
+      background: var(--success-light);
+    }
+
+    .table-wrapper {
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+    }
+
+    table {
+      width: 100%;
+      min-width: 750px;
+      border-collapse: collapse;
+      background: #fff;
+    }
+
+    th,
+    td {
+      padding: 12px 13px;
+      border-bottom: 1px solid var(--border);
+      text-align: left;
+      vertical-align: middle;
+    }
+
+    th {
+      color: #4d4b5e;
+      background: #f8f4fc;
+      font-size: 0.86rem;
+    }
+
+    tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .dashboard-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .legal-result {
+      display: none;
+    }
+
+    .legal-result.visible {
+      display: block;
+    }
+
+    .empty-state {
+      padding: 30px;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    dialog {
+      width: min(520px, calc(100% - 28px));
+      padding: 0;
+      border: 0;
+      border-radius: 16px;
+      box-shadow: 0 24px 80px rgba(31, 24, 73, 0.28);
+    }
+
+    dialog::backdrop {
+      background: rgba(22, 18, 43, 0.58);
+    }
+
+    .modal-content {
+      padding: 24px;
+    }
+
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 9px;
+      margin-top: 20px;
+    }
+
+    footer {
+      width: min(1180px, calc(100% - 32px));
+      margin: 45px auto 0;
+      padding: 24px 0 32px;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 0.88rem;
+    }
+
+    .footer-grid {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .sr-only {
+      position: absolute;
+      overflow: hidden;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      border: 0;
+      white-space: nowrap;
+      clip: rect(0, 0, 0, 0);
+    }
+
+    @media (max-width: 900px) {
+      .feature-grid,
+      .stats-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .menu-button {
+        display: inline-flex;
+      }
+
+      .main-nav {
+        display: none;
+        position: absolute;
+        top: 70px;
+        right: 16px;
+        left: 16px;
+        padding: 10px;
+        flex-direction: column;
+        align-items: stretch;
+        border: 1px solid var(--border);
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: var(--shadow);
+      }
+
+      .main-nav.open {
+        display: flex;
+      }
+
+      .nav-button {
+        text-align: left;
+      }
+    }
+
+    @media (max-width: 620px) {
+      .layout,
+      .header-inner,
+      footer {
+        width: min(100% - 20px, 1180px);
+      }
+
+      .hero {
+        padding: 28px 20px;
+        border-radius: 18px;
+      }
+
+      .hero-content {
+        grid-template-columns: 1fr;
+        gap: 22px;
+        text-align: center;
+      }
+
+      .hero-logo {
+        width: 130px;
+        height: 130px;
+        margin: 0 auto;
+      }
+
+      .hero-text {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .hero p {
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .hero-actions {
+        justify-content: center;
+      }
+
+      .feature-grid,
+      .stats-grid,
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .full-column {
+        grid-column: auto;
+      }
+
+      .dashboard-toolbar {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .button {
+        width: 100%;
+      }
+
+      .search-box .button,
+      .filter-bar .button,
+      .inline-actions .button {
+        width: auto;
+      }
+    }
+  
+.hero-logo{
+    width:min(420px,42vw) !important;
+    max-width:420px !important;
+    height:auto !important;
+}
+@media (max-width: 700px){
+    .hero-logo{
+        width:min(320px,75vw) !important;
+        max-width:320px !important;
+    }
+}
+
+/* Ajuste da imagem da área inicial */
+.hero-visual {
+    width: 38%;
+    min-width: 300px;
+    max-width: 420px;
+    height: 420px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border-radius: 32px;
+}
+
+.hero-logo {
+    width: 100% !important;
+    max-width: 390px !important;
+    height: 100% !important;
+    object-fit: contain !important;
+    object-position: center !important;
+    display: block;
+}
+
+@media (max-width: 900px) {
+    .hero-visual {
+        width: 36%;
+        min-width: 260px;
+        height: 360px;
+    }
+
+    .hero-logo {
+        max-width: 330px !important;
+    }
+}
+
+@media (max-width: 700px) {
+    .hero-visual {
+        width: 100%;
+        min-width: 0;
+        height: 330px;
+        order: 2;
+    }
+
+    .hero-logo {
+        width: 80% !important;
+        max-width: 320px !important;
+        height: 100% !important;
+    }
+}
+
+
+/* ===== HERO: logo maior e centralizada no espaço direito ===== */
+.hero-content {
+    width: 100%;
+    max-width: none !important;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 390px !important;
+    align-items: center;
+    gap: 34px !important;
+}
+
+.hero-text {
+    min-width: 0;
+    max-width: 700px;
+}
+
+.hero-logo {
+    width: 350px !important;
+    height: 350px !important;
+    max-width: 100% !important;
+    object-fit: contain !important;
+    object-position: center !important;
+    justify-self: center;
+    align-self: center;
+    display: block;
+    margin: 0 auto;
+    border-radius: 0 !important;
+    filter: drop-shadow(0 14px 28px rgba(111, 91, 151, 0.14));
+}
+
+@media (max-width: 1000px) {
+    .hero-content {
+        grid-template-columns: minmax(0, 1fr) 320px !important;
+        gap: 24px !important;
+    }
+
+    .hero-logo {
+        width: 300px !important;
+        height: 300px !important;
+    }
+}
+
+@media (max-width: 700px) {
+    .hero-content {
+        grid-template-columns: 1fr !important;
+        gap: 24px !important;
+        text-align: center;
+    }
+
+    .hero-text {
+        max-width: 100%;
+    }
+
+    .hero-logo {
+        width: min(300px, 78vw) !important;
+        height: min(300px, 78vw) !important;
+        margin: 0 auto;
+    }
+
+    .hero-actions {
+        justify-content: center;
+    }
+}
+
+
+/* ===== BOTÃO ACOMPANHAR PROTOCOLO ===== */
+.hero-actions .button-secondary,
+.hero-actions a[href*="acompanhar"],
+.hero-actions button:nth-child(2) {
+    background: #8f78c9 !important;
+    color: #ffffff !important;
+    border: 1px solid #8f78c9 !important;
+    box-shadow: 0 6px 16px rgba(111, 91, 151, 0.18);
+    font-weight: 600;
+    opacity: 1 !important;
+}
+
+.hero-actions .button-secondary:hover,
+.hero-actions a[href*="acompanhar"]:hover,
+.hero-actions button:nth-child(2):hover {
+    background: #66539e !important;
+    border-color: #66539e !important;
+    color: #ffffff !important;
+    transform: translateY(-2px);
+}
+
+</style>
+</head>
+
+<body>
+  <a class="skip-link" href="#conteudo">Ir para o conteúdo</a>
+
+  <header class="app-header">
+    <div class="header-inner">
+      <button
+        class="brand"
+        type="button"
+        data-view="inicio"
+        aria-label="Ir para a página inicial"
+        style="border:0;background:none;cursor:pointer"
+      >
+        <img class="brand-logo" src="logo.jpeg" alt="" aria-hidden="true">
+        <span>V.E.L.A. &amp; P.R.I.S.M.A.</span>
+      </button>
+
+      <button
+        id="menuButton"
+        class="menu-button"
+        type="button"
+        aria-expanded="false"
+        aria-controls="mainNav"
+      >
+        Menu
+      </button>
+
+      <nav id="mainNav" class="main-nav" aria-label="Navegação principal">
+        <button class="nav-button active" type="button" data-view="inicio">Início</button>
+        <button class="nav-button" type="button" data-view="denunciar">Denunciar</button>
+        <button class="nav-button" type="button" data-view="acompanhar">Acompanhar</button>
+        <button class="nav-button" type="button" data-view="base-legal">Base Legal</button>
+        <button class="nav-button" type="button" data-view="painel">Painel</button>
+        <button class="nav-button" type="button" data-view="candidatura">Seja profissional</button>
+      </nav>
+    </div>
+  </header>
+
+  <main id="conteudo" class="layout">
+    <section id="inicio" class="view active" aria-labelledby="titulo-inicio">
+      <div class="hero">
+        <div class="hero-content">
+          <div class="hero-text">
+            <p class="eyebrow">Acolhimento, segurança e privacidade</p>
+            <h1 id="titulo-inicio">Sua voz merece ser ouvida com responsabilidade.</h1>
+          <p>
+            Registre uma denúncia, acompanhe o atendimento por protocolo e receba
+            orientações de uma equipe preparada, com separação entre casos V.E.L.A.
+            e P.R.I.S.M.A.
+          </p>
+
+            <div class="hero-actions">
+              <button class="button button-light" type="button" data-view="denunciar">
+                Fazer uma denúncia
+              </button>
+              <button class="button button-outline-light" type="button" data-view="acompanhar">
+                Acompanhar protocolo
+              </button>
+            </div>
+          </div>
+          <img class="hero-logo" src="logo.jpeg" alt="Símbolo V.E.L.A. & P.R.I.S.M.A.">
+        </div>
+      </div>
+
+      <section class="section" aria-labelledby="como-funciona">
+        <h2 id="como-funciona" class="section-title">Como funciona</h2>
+        <p class="section-description">
+          Um fluxo simples, com classificação preliminar e análise humana.
+        </p>
+
+        <div class="feature-grid">
+          <article class="card">
+            <div class="feature-icon" aria-hidden="true">1</div>
+            <h3>Registre a ocorrência</h3>
+            <p>
+              Informe quem está realizando a denúncia, descreva o caso e escolha a
+              gravidade percebida. O fluxo foi pensado para oferecer segurança e acolhimento.
+            </p>
+          </article>
+
+          <article class="card">
+            <div class="feature-icon" aria-hidden="true">2</div>
+            <h3>Receba um protocolo</h3>
+            <p>
+              Guarde o código gerado para consultar o andamento e as respostas da equipe.
+            </p>
+          </article>
+
+          <article class="card">
+            <div class="feature-icon" aria-hidden="true">3</div>
+            <h3>Acompanhe o atendimento</h3>
+            <p>
+              Veja o status, o prazo e as mensagens externas associadas à denúncia.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section feature-grid" aria-label="Equipes de atendimento">
+        <article class="card">
+          <span class="pill">V.E.L.A.</span>
+          <h2>Casos leves e médios</h2>
+          <p>
+            Atendimento reservado a ocorrências inicialmente classificadas como
+            leves ou médias.
+          </p>
+        </article>
+
+        <article class="card">
+          <span class="pill pill-danger">P.R.I.S.M.A.</span>
+          <h2>Casos urgentes e emergenciais</h2>
+          <p>
+            Fluxo separado para ocorrências urgentes ou situações de emergência.
+          </p>
+        </article>
+
+        <article class="card">
+          <span class="pill pill-success">Privacidade</span>
+          <h2>Menor privilégio</h2>
+          <p>
+            Cada equipe acessa somente os casos sob sua responsabilidade. Alterações
+            sensíveis devem gerar registros de auditoria.
+          </p>
+        </article>
+      </section>
+
+      <div class="alert alert-danger" role="alert">
+        <strong>Risco imediato:</strong> esta demonstração não aciona autoridades.
+        Em uma emergência real no Brasil, procure os serviços públicos adequados.
+        Polícia Militar: 190. SAMU: 192. Bombeiros: 193. Central de Atendimento à
+        Mulher: 180. CVV: 188.
+      </div>
+    </section>
+
+    <section id="denunciar" class="view" aria-labelledby="titulo-denunciar">
+      <div class="form-card card">
+        <h1 id="titulo-denunciar" class="page-title">Nova denúncia</h1>
+        <p class="page-description">
+          Preencha os dados em duas etapas. A gravidade e a equipe escolhida serão registradas junto ao protocolo.
+        </p>
+
+        <div class="alert alert-warning">
+          Não inclua senhas, dados bancários ou informações desnecessárias. Este protótipo
+          armazena os registros somente no armazenamento local deste navegador.
+        </div>
+
+        <div class="steps-indicator" aria-label="Etapas da denúncia">
+          <div id="stepIndicator1" class="step-indicator active">
+            <span>1</span>
+            <strong>Identificação</strong>
+          </div>
+          <div class="step-line"></div>
+          <div id="stepIndicator2" class="step-indicator">
+            <span>2</span>
+            <strong>Classificação</strong>
+          </div>
+        </div>
+
+        <form id="reportForm">
+          <section id="reportStep1" class="report-step active-step">
+            <h2>1. Quem está realizando a denúncia?</h2>
+            <p class="muted">Escolha uma opção para abrir os campos correspondentes.</p>
+
+            <div class="field full-column">
+              <label for="tipoDenunciante">Tipo de denunciante</label>
+              <select id="tipoDenunciante" name="tipoDenunciante" required>
+                <option value="">Selecione</option>
+                <option value="pessoa_fisica">Pessoa Física</option>
+                <option value="empresa">Empresa</option>
+              </select>
+            </div>
+
+            <div id="dadosPessoaFisica" class="form-grid nested-fields" hidden>
+              <div class="field">
+                <label for="nomePessoa">Nome completo</label>
+                <input id="nomePessoa" name="nomePessoa" type="text" maxlength="150" autocomplete="name">
+              </div>
+
+              <div class="field">
+                <label for="idadePessoa">Idade</label>
+                <input id="idadePessoa" name="idadePessoa" type="number" min="1" max="120">
+              </div>
+
+              <div class="field">
+                <label for="cargoPessoa">Cargo</label>
+                <input id="cargoPessoa" name="cargoPessoa" type="text" maxlength="120">
+              </div>
+
+              <div class="field">
+                <label for="setorPessoa">Setor</label>
+                <input id="setorPessoa" name="setorPessoa" type="text" maxlength="120">
+              </div>
+
+              <div class="field full-column">
+                <label for="empresaPessoa">Empresa para a qual trabalha ou que está denunciando</label>
+                <input id="empresaPessoa" name="empresaPessoa" type="text" maxlength="180">
+              </div>
+
+              <div class="field">
+                <label for="vinculoPessoa">Você é cliente ou funcionário?</label>
+                <select id="vinculoPessoa" name="vinculoPessoa">
+                  <option value="">Selecione</option>
+                  <option value="cliente">Cliente</option>
+                  <option value="funcionario">Funcionário</option>
+                </select>
+              </div>
+
+              <div class="field">
+                <label for="emailPessoa">E-mail</label>
+                <input id="emailPessoa" name="emailPessoa" type="email" maxlength="180" autocomplete="email">
+              </div>
+
+              <div class="field full-column">
+                <label for="justificativaPessoa">Justificativa da denúncia</label>
+                <textarea id="justificativaPessoa" name="justificativaPessoa" maxlength="10000" placeholder="Explique o que aconteceu, com as informações necessárias para análise."></textarea>
+              </div>
+            </div>
+
+            <div id="dadosEmpresa" class="form-grid nested-fields" hidden>
+              <div class="field">
+                <label for="cnpjEmpresa">CNPJ</label>
+                <input id="cnpjEmpresa" name="cnpjEmpresa" type="text" maxlength="18" inputmode="numeric" placeholder="00.000.000/0000-00">
+              </div>
+
+              <div class="field">
+                <label for="nomeEmpresa">Nome da empresa</label>
+                <input id="nomeEmpresa" name="nomeEmpresa" type="text" maxlength="180">
+              </div>
+
+              <div class="field full-column">
+                <label for="enderecoEmpresa">Endereço</label>
+                <input id="enderecoEmpresa" name="enderecoEmpresa" type="text" maxlength="250" autocomplete="street-address">
+              </div>
+
+              <div class="field full-column">
+                <label for="motivoEmpresa">Motivo da denúncia</label>
+                <textarea id="motivoEmpresa" name="motivoEmpresa" maxlength="10000" placeholder="Explique o motivo da denúncia e os fatos que precisam ser analisados."></textarea>
+              </div>
+            </div>
+
+            <div class="inline-actions">
+              <button id="nextReportStep" class="button" type="button">Continuar para classificação</button>
+            </div>
+          </section>
+
+          <section id="reportStep2" class="report-step" hidden>
+            <h2>2. Classificação da denúncia</h2>
+            <p class="muted">Informe a gravidade percebida e escolha qual equipe deverá receber o caso.</p>
+
+            <div class="form-grid">
+              <div class="field">
+                <label for="gravidade">Gravidade</label>
+                <select id="gravidade" name="gravidade" required>
+                  <option value="leve">Leve</option>
+                  <option value="media" selected>Média</option>
+                  <option value="urgente">Urgente</option>
+                  <option value="emergencia">Emergência</option>
+                </select>
+              </div>
+
+              <div class="field">
+                <label for="equipe">Equipe a ser ativada</label>
+                <select id="equipe" name="equipe" required>
+                  <option value="">Selecione</option>
+                  <option value="vela">V.E.L.A.</option>
+                  <option value="prisma">P.R.I.S.M.A.</option>
+                </select>
+              </div>
+
+              <div id="emergencyNotice" class="full-column alert alert-danger" hidden>
+                <strong>Atenção:</strong> este formulário não aciona autoridades ou serviços de emergência.
+                Em risco imediato, procure os serviços públicos adequados. Polícia Militar: 190.
+                SAMU: 192. Bombeiros: 193.
+              </div>
+            </div>
+
+            <div class="inline-actions">
+              <button id="backReportStep" class="button button-muted" type="button">Voltar</button>
+              <button class="button" type="submit">Registrar denúncia</button>
+            </div>
+          </section>
+        </form>
+
+        <div id="protocolResult" class="protocol-result alert alert-success" role="status">
+          <strong>Denúncia registrada nesta demonstração.</strong>
+          <p>Guarde seu protocolo:</p>
+          <span id="generatedProtocol" class="protocol-code"></span>
+          <p>
+            Os dados deste protótipo ficam apenas no armazenamento local deste navegador.
+          </p>
+          <button id="followGeneratedProtocol" class="button button-secondary" type="button">
+            Acompanhar protocolo
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section id="acompanhar" class="view" aria-labelledby="titulo-acompanhar">
+      <div class="card">
+        <h1 id="titulo-acompanhar" class="page-title">Acompanhar denúncia</h1>
+        <p class="page-description">
+          Digite o protocolo recebido no momento do registro.
+        </p>
+
+        <form id="trackingForm" class="search-box">
+          <div class="field">
+            <label for="trackingProtocol">Protocolo</label>
+            <input
+              id="trackingProtocol"
+              type="text"
+              required
+              placeholder="VP-2026-XXXXXXXX"
+              autocomplete="off"
+            >
+          </div>
+          <button class="button" type="submit">Buscar</button>
+        </form>
+
+        <p id="trackingError" class="alert alert-danger" hidden>
+          Protocolo não encontrado neste navegador.
+        </p>
+
+        <article id="caseSummary" class="case-summary">
+          <div class="inline-actions" style="justify-content:space-between;align-items:center">
+            <div>
+              <span id="caseStatus" class="pill">Nova</span>
+              <h2 id="caseProtocol" style="margin:10px 0 0"></h2>
+            </div>
+            <span id="caseTeam" class="pill"></span>
+          </div>
+
+          <div class="feature-grid section">
+            <div class="card">
+              <strong>Tipo de denunciante</strong>
+              <p id="caseCategory"></p>
+            </div>
+            <div class="card">
+              <strong>Gravidade preliminar</strong>
+              <p id="caseSeverity"></p>
+            </div>
+            <div class="card">
+              <strong>Prazo indicativo</strong>
+              <p id="caseDeadline"></p>
+            </div>
+          </div>
+
+          <h3>Andamento</h3>
+          <ol class="timeline">
+            <li>
+              <strong>Denúncia registrada</strong>
+              <div id="caseCreatedAt" class="muted"></div>
+            </li>
+            <li>
+              <strong>Aguardando análise inicial</strong>
+              <div class="muted">
+                A equipe responsável confirmará a classificação e o encaminhamento.
+              </div>
+            </li>
+          </ol>
+        </article>
+      </div>
+    </section>
+
+    <section id="base-legal" class="view" aria-labelledby="titulo-base-legal">
+      <h1 id="titulo-base-legal" class="page-title">Base Legal</h1>
+      <p class="page-description">
+        Pesquisa demonstrativa por legislação, artigo ou tema.
+      </p>
+
+      <div class="alert alert-warning">
+        <strong>Aviso jurídico:</strong> o conteúdo desta área é somente informativo
+        e não substitui consulta, orientação ou representação por profissional habilitado.
+        A legislação deve ser verificada em fonte oficial.
+      </div>
+
+      <div class="card">
+        <form id="legalSearchForm" class="filter-bar">
+          <div class="field">
+            <label for="legalLaw">Legislação</label>
+            <input id="legalLaw" placeholder="Ex.: LGPD">
+          </div>
+          <div class="field">
+            <label for="legalArticle">Artigo</label>
+            <input id="legalArticle" placeholder="Ex.: Art. 6">
+          </div>
+          <div class="field">
+            <label for="legalTheme">Tema</label>
+            <input id="legalTheme" placeholder="Ex.: privacidade">
+          </div>
+          <button class="button" type="submit">Pesquisar</button>
+        </form>
+      </div>
+
+      <div id="legalEmpty" class="card empty-state">
+        A base desta demonstração começa sem textos legais para evitar a exibição
+        de conteúdo jurídico não verificado.
+      </div>
+
+      <article id="legalResult" class="card legal-result">
+        <span class="pill pill-warning">Demonstração</span>
+        <h2>Nenhuma correspondência oficial cadastrada</h2>
+        <p>
+          O sistema real deve aceitar somente textos copiados de fontes oficiais,
+          com URL ou órgão responsável, versão e data da última verificação.
+        </p>
+      </article>
+    </section>
+
+    <section id="painel" class="view" aria-labelledby="titulo-painel">
+      <div class="dashboard-toolbar">
+        <div>
+          <h1 id="titulo-painel" class="page-title">Painel profissional</h1>
+          <p class="page-description">
+            Visão demonstrativa da equipe V.E.L.A.
+          </p>
+        </div>
+        <span class="pill">Perfil demonstrativo</span>
+      </div>
+
+      <div class="stats-grid">
+        <article class="stat-card">
+          <strong id="statTotal">3</strong>
+          <span>denúncias recebidas</span>
+        </article>
+        <article class="stat-card">
+          <strong>1</strong>
+          <span>leve gravidade</span>
+        </article>
+        <article class="stat-card">
+          <strong>2</strong>
+          <span>média gravidade</span>
+        </article>
+        <article class="stat-card">
+          <strong>2</strong>
+          <span>atendimentos ativos</span>
+        </article>
+      </div>
+
+      <div class="card section">
+        <h2>Casos da equipe</h2>
+
+        <div class="filter-bar" style="margin-bottom:16px">
+          <div class="field">
+            <label for="dashboardStatus">Status</label>
+            <select id="dashboardStatus">
+              <option value="">Todos</option>
+              <option value="nova">Nova</option>
+              <option value="em_analise">Em análise</option>
+              <option value="aguardando">Aguardando informações</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="dashboardSeverity">Gravidade</label>
+            <select id="dashboardSeverity">
+              <option value="">Todas</option>
+              <option value="leve">Leve</option>
+              <option value="media">Média</option>
+              <option value="urgente">Urgente</option>
+              <option value="emergencia">Emergência</option>
+            </select>
+          </div>
+
+          <button id="clearDashboardFilters" class="button button-muted" type="button">
+            Limpar
+          </button>
+        </div>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Protocolo</th>
+                <th>Denunciante</th>
+                <th>Gravidade</th>
+                <th>Status</th>
+                <th>Prazo</th>
+                <th>Ação</th>
+              </tr>
+            </thead>
+            <tbody id="caseTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section id="candidatura" class="view" aria-labelledby="titulo-candidatura">
+      <div class="form-card card">
+        <h1 id="titulo-candidatura" class="page-title">Seja profissional</h1>
+        <p class="page-description">
+          A candidatura não concede acesso automático a denúncias. Aprovação,
+          treinamento e permissões dependem de avaliação manual.
+        </p>
+
+        <form id="applicationForm">
+          <div class="form-grid">
+            <div class="field">
+              <label for="candidateName">Nome</label>
+              <input id="candidateName" required maxlength="150">
+            </div>
+
+            <div class="field">
+              <label for="candidateEmail">E-mail</label>
+              <input id="candidateEmail" type="email" required>
+            </div>
+
+            <div class="field">
+              <label for="candidateTeam">Equipe pretendida</label>
+              <select id="candidateTeam" required>
+                <option value="vela">V.E.L.A.</option>
+                <option value="prisma">P.R.I.S.M.A.</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="candidateArea">Área de atuação</label>
+              <input id="candidateArea" maxlength="150">
+            </div>
+
+            <div class="field full-column">
+              <label for="candidateEducation">Formação</label>
+              <input id="candidateEducation" required maxlength="255">
+            </div>
+
+            <div class="field full-column">
+              <label for="candidateExperience">Experiência</label>
+              <textarea id="candidateExperience"></textarea>
+            </div>
+
+            <div class="field full-column">
+              <label for="candidateMotivation">Motivação</label>
+              <textarea id="candidateMotivation"></textarea>
+            </div>
+
+            <div class="field full-column">
+              <label class="checkbox-field">
+                <input id="termsAccepted" type="checkbox" required>
+                <span>
+                  Li e aceito o termo de responsabilidade, confidencialidade,
+                  limites de atuação e proteção de dados.
+                </span>
+              </label>
+            </div>
+          </div>
+
+          <button class="button" type="submit">Enviar candidatura</button>
+        </form>
+
+        <div id="applicationSuccess" class="alert alert-success" hidden role="status">
+          Candidatura registrada nesta demonstração com status
+          <strong>Em avaliação</strong>.
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <dialog id="caseDialog" aria-labelledby="dialogTitle">
+    <div class="modal-content">
+      <h2 id="dialogTitle">Detalhes do caso</h2>
+      <p id="dialogBody"></p>
+
+      <div class="alert alert-warning">
+        Esta é uma interface demonstrativa. Alterações reais de status, gravidade
+        ou mensagens exigem autenticação, autorização no servidor, CSRF e auditoria.
+      </div>
+
+      <div class="modal-actions">
+        <button id="closeDialog" class="button button-muted" type="button">Fechar</button>
+      </div>
+    </div>
+  </dialog>
+
+  <footer>
+    <div class="footer-grid">
+      <div>
+        <strong>V.E.L.A. &amp; P.R.I.S.M.A.</strong><br>
+        Ideia original: Maria Gabriela. Equipe: Maria Gabriela, Sarah, Davi e Igor.
+      </div>
+      <div>
+        Segurança - Privacidade - Confiabilidade - Acessibilidade
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    "use strict";
+
+    const views = document.querySelectorAll(".view");
+    const navigationButtons = document.querySelectorAll("[data-view]");
+    const mainNav = document.getElementById("mainNav");
+    const menuButton = document.getElementById("menuButton");
+
+    function showView(viewId) {
+      views.forEach((view) => {
+        view.classList.toggle("active", view.id === viewId);
+      });
+
+      document.querySelectorAll(".nav-button").forEach((button) => {
+        button.classList.toggle("active", button.dataset.view === viewId);
+      });
+
+      mainNav.classList.remove("open");
+      menuButton.setAttribute("aria-expanded", "false");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+
+      const title = document.querySelector(`#${viewId} h1`);
+      if (title) {
+        title.setAttribute("tabindex", "-1");
+        setTimeout(() => title.focus({ preventScroll: true }), 200);
+      }
+    }
+
+    navigationButtons.forEach((button) => {
+      button.addEventListener("click", () => showView(button.dataset.view));
+    });
+
+    menuButton.addEventListener("click", () => {
+      const isOpen = mainNav.classList.toggle("open");
+      menuButton.setAttribute("aria-expanded", String(isOpen));
+    });
+
+    function protocolYear() {
+      return new Date().getFullYear();
+    }
+
+    function generateProtocol() {
+      const randomPart = crypto.getRandomValues(new Uint32Array(1))[0]
+        .toString(16)
+        .toUpperCase()
+        .padStart(8, "0")
+        .slice(0, 8);
+
+      return `VP-${protocolYear()}-${randomPart}`;
+    }
+
+    function getReports() {
+      try {
+        return JSON.parse(localStorage.getItem("vp_reports") || "[]");
+      } catch {
+        return [];
+      }
+    }
+
+    function saveReports(reports) {
+      localStorage.setItem("vp_reports", JSON.stringify(reports));
+    }
+
+    function formatLabel(value) {
+      const labels = {
+        leve: "Leve",
+        media: "Média",
+        urgente: "Urgente",
+        emergencia: "Emergência",
+        nova: "Nova",
+        em_analise: "Em análise",
+        aguardando: "Aguardando informações"
+      };
+
+      return labels[value] || value || "—";
+    }
+
+    function formatDate(date) {
+      return new Intl.DateTimeFormat("pt-BR", {
+        dateStyle: "long",
+        timeStyle: "short"
+      }).format(new Date(date));
+    }
+
+    function deadlineFrom(date) {
+      const deadline = new Date(date);
+      deadline.setDate(deadline.getDate() + 14);
+
+      return new Intl.DateTimeFormat("pt-BR", {
+        dateStyle: "long"
+      }).format(deadline);
+    }
+
+    const reportForm = document.getElementById("reportForm");
+    const tipoDenunciante = document.getElementById("tipoDenunciante");
+    const dadosPessoaFisica = document.getElementById("dadosPessoaFisica");
+    const dadosEmpresa = document.getElementById("dadosEmpresa");
+    const reportStep1 = document.getElementById("reportStep1");
+    const reportStep2 = document.getElementById("reportStep2");
+    const stepIndicator1 = document.getElementById("stepIndicator1");
+    const stepIndicator2 = document.getElementById("stepIndicator2");
+    const nextReportStep = document.getElementById("nextReportStep");
+    const backReportStep = document.getElementById("backReportStep");
+    const severity = document.getElementById("gravidade");
+    const emergencyNotice = document.getElementById("emergencyNotice");
+    const protocolResult = document.getElementById("protocolResult");
+    const generatedProtocol = document.getElementById("generatedProtocol");
+    let lastGeneratedProtocol = "";
+
+    const personFields = [
+      "nomePessoa", "idadePessoa", "cargoPessoa", "setorPessoa",
+      "empresaPessoa", "vinculoPessoa", "emailPessoa", "justificativaPessoa"
+    ];
+    const companyFields = [
+      "cnpjEmpresa", "nomeEmpresa", "enderecoEmpresa", "motivoEmpresa"
+    ];
+
+    function setRequired(ids, required) {
+      ids.forEach((id) => {
+        const field = document.getElementById(id);
+        field.required = required;
+      });
+    }
+
+    function updateDenuncianteFields() {
+      const isPerson = tipoDenunciante.value === "pessoa_fisica";
+      const isCompany = tipoDenunciante.value === "empresa";
+
+      dadosPessoaFisica.hidden = !isPerson;
+      dadosEmpresa.hidden = !isCompany;
+      setRequired(personFields, isPerson);
+      setRequired(companyFields, isCompany);
+    }
+
+    function showReportStep(step) {
+      const first = step === 1;
+      reportStep1.hidden = !first;
+      reportStep2.hidden = first;
+      reportStep1.classList.toggle("active-step", first);
+      reportStep2.classList.toggle("active-step", !first);
+      stepIndicator1.classList.toggle("active", first);
+      stepIndicator2.classList.toggle("active", !first);
+
+      const heading = first ? reportStep1.querySelector("h2") : reportStep2.querySelector("h2");
+      heading.setAttribute("tabindex", "-1");
+      heading.focus({ preventScroll: true });
+    }
+
+    tipoDenunciante.addEventListener("change", updateDenuncianteFields);
+
+    nextReportStep.addEventListener("click", () => {
+      updateDenuncianteFields();
+
+      if (!tipoDenunciante.reportValidity()) {
+        return;
+      }
+
+      const fieldsToValidate = tipoDenunciante.value === "pessoa_fisica" ? personFields : companyFields;
+      const firstInvalid = fieldsToValidate
+        .map((id) => document.getElementById(id))
+        .find((field) => !field.checkValidity());
+
+      if (firstInvalid) {
+        firstInvalid.reportValidity();
+        return;
+      }
+
+      showReportStep(2);
+    });
+
+    backReportStep.addEventListener("click", () => showReportStep(1));
+
+    severity.addEventListener("change", () => {
+      emergencyNotice.hidden = severity.value !== "emergencia";
+    });
+
+    reportForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+
+      if (!reportForm.reportValidity()) {
+        return;
+      }
+
+      const protocol = generateProtocol();
+      const gravity = severity.value;
+      const team = document.getElementById("equipe").value === "prisma"
+        ? "P.R.I.S.M.A."
+        : "V.E.L.A.";
+      const isPerson = tipoDenunciante.value === "pessoa_fisica";
+
+      const personData = isPerson ? {
+        name: document.getElementById("nomePessoa").value.trim(),
+        age: document.getElementById("idadePessoa").value,
+        role: document.getElementById("cargoPessoa").value.trim(),
+        sector: document.getElementById("setorPessoa").value.trim(),
+        company: document.getElementById("empresaPessoa").value.trim(),
+        relationship: document.getElementById("vinculoPessoa").value,
+        email: document.getElementById("emailPessoa").value.trim(),
+        justification: document.getElementById("justificativaPessoa").value.trim()
+      } : null;
+
+      const companyData = !isPerson ? {
+        cnpj: document.getElementById("cnpjEmpresa").value.trim(),
+        name: document.getElementById("nomeEmpresa").value.trim(),
+        address: document.getElementById("enderecoEmpresa").value.trim(),
+        reason: document.getElementById("motivoEmpresa").value.trim()
+      } : null;
+
+      const report = {
+        protocol,
+        reporterType: isPerson ? "Pessoa Física" : "Empresa",
+        personData,
+        companyData,
+        description: isPerson ? personData.justification : companyData.reason,
+        severity: gravity,
+        team,
+        status: "nova",
+        createdAt: new Date().toISOString()
+      };
+
+      const reports = getReports();
+      reports.unshift(report);
+      saveReports(reports);
+
+      lastGeneratedProtocol = protocol;
+      generatedProtocol.textContent = protocol;
+      protocolResult.classList.add("visible");
+      reportForm.reset();
+      updateDenuncianteFields();
+      emergencyNotice.hidden = true;
+      showReportStep(1);
+      protocolResult.scrollIntoView({ behavior: "smooth", block: "center" });
+    });
+
+    document.getElementById("followGeneratedProtocol").addEventListener("click", () => {
+      document.getElementById("trackingProtocol").value = lastGeneratedProtocol;
+      showView("acompanhar");
+      displayTrackedReport(lastGeneratedProtocol);
+    });
+
+    const trackingForm = document.getElementById("trackingForm");
+    const trackingError = document.getElementById("trackingError");
+    const caseSummary = document.getElementById("caseSummary");
+
+    function displayTrackedReport(rawProtocol) {
+      const protocol = rawProtocol.trim().toUpperCase();
+      const report = getReports().find((item) => item.protocol === protocol);
+
+      if (!report) {
+        trackingError.hidden = false;
+        caseSummary.classList.remove("visible");
+        return;
+      }
+
+      trackingError.hidden = true;
+      caseSummary.classList.add("visible");
+
+      document.getElementById("caseProtocol").textContent = report.protocol;
+      document.getElementById("caseStatus").textContent = formatLabel(report.status);
+      document.getElementById("caseTeam").textContent = report.team;
+      document.getElementById("caseCategory").textContent = report.reporterType || "—";
+      document.getElementById("caseSeverity").textContent = formatLabel(report.severity);
+      document.getElementById("caseDeadline").textContent = deadlineFrom(report.createdAt);
+      document.getElementById("caseCreatedAt").textContent = formatDate(report.createdAt);
+    }
+
+    trackingForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      displayTrackedReport(document.getElementById("trackingProtocol").value);
+    });
+
+    const legalSearchForm = document.getElementById("legalSearchForm");
+    const legalEmpty = document.getElementById("legalEmpty");
+    const legalResult = document.getElementById("legalResult");
+
+    legalSearchForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+
+      const hasSearch = [
+        document.getElementById("legalLaw").value,
+        document.getElementById("legalArticle").value,
+        document.getElementById("legalTheme").value
+      ].some((value) => value.trim() !== "");
+
+      legalEmpty.hidden = hasSearch;
+      legalResult.classList.toggle("visible", hasSearch);
+    });
+
+    const demonstrationCases = [
+      {
+        protocol: "VP-2026-A19F02BC",
+        reporterType: "Pessoa Física",
+        severity: "media",
+        status: "nova",
+        deadline: "Dentro do prazo"
+      },
+      {
+        protocol: "VP-2026-15B73D20",
+        reporterType: "Empresa",
+        severity: "leve",
+        status: "em_analise",
+        deadline: "Próximo do prazo"
+      },
+      {
+        protocol: "VP-2026-9CD442A1",
+        reporterType: "Pessoa Física",
+        severity: "urgente",
+        status: "aguardando",
+        deadline: "Dentro do prazo"
+      }
+    ];
+
+    const caseTableBody = document.getElementById("caseTableBody");
+    const dashboardStatus = document.getElementById("dashboardStatus");
+    const dashboardSeverity = document.getElementById("dashboardSeverity");
+    const caseDialog = document.getElementById("caseDialog");
+
+    function renderDashboard() {
+      const filteredCases = demonstrationCases.filter((item) => {
+        const matchesStatus =
+          dashboardStatus.value === "" || item.status === dashboardStatus.value;
+        const matchesSeverity =
+          dashboardSeverity.value === "" || item.severity === dashboardSeverity.value;
+
+        return matchesStatus && matchesSeverity;
+      });
+
+      caseTableBody.replaceChildren();
+
+      if (filteredCases.length === 0) {
+        const row = document.createElement("tr");
+        const cell = document.createElement("td");
+
+        cell.colSpan = 6;
+        cell.className = "empty-state";
+        cell.textContent = "Nenhum caso encontrado com esses filtros.";
+        row.appendChild(cell);
+        caseTableBody.appendChild(row);
+        return;
+      }
+
+      filteredCases.forEach((item) => {
+        const row = document.createElement("tr");
+
+        [
+          item.protocol,
+          item.reporterType,
+          formatLabel(item.severity),
+          formatLabel(item.status),
+          item.deadline
+        ].forEach((text) => {
+          const cell = document.createElement("td");
+          cell.textContent = text;
+          row.appendChild(cell);
+        });
+
+        const actionCell = document.createElement("td");
+        const actionButton = document.createElement("button");
+
+        actionButton.type = "button";
+        actionButton.className = "button button-small button-muted";
+        actionButton.textContent = "Abrir";
+        actionButton.addEventListener("click", () => {
+          document.getElementById("dialogBody").textContent =
+            `${item.protocol} - ${item.reporterType}. Gravidade ${formatLabel(item.severity)}; ` +
+            `status ${formatLabel(item.status)}; prazo: ${item.deadline}.`;
+
+          caseDialog.showModal();
+        });
+
+        actionCell.appendChild(actionButton);
+        row.appendChild(actionCell);
+        caseTableBody.appendChild(row);
+      });
+    }
+
+    dashboardStatus.addEventListener("change", renderDashboard);
+    dashboardSeverity.addEventListener("change", renderDashboard);
+
+    document.getElementById("clearDashboardFilters").addEventListener("click", () => {
+      dashboardStatus.value = "";
+      dashboardSeverity.value = "";
+      renderDashboard();
+    });
+
+    document.getElementById("closeDialog").addEventListener("click", () => {
+      caseDialog.close();
+    });
+
+    caseDialog.addEventListener("click", (event) => {
+      if (event.target === caseDialog) {
+        caseDialog.close();
+      }
+    });
+
+    const applicationForm = document.getElementById("applicationForm");
+    const applicationSuccess = document.getElementById("applicationSuccess");
+
+    applicationForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+
+      if (!applicationForm.reportValidity()) {
+        return;
+      }
+
+      applicationSuccess.hidden = false;
+      applicationForm.reset();
+      applicationSuccess.scrollIntoView({ behavior: "smooth", block: "center" });
+    });
+
+    renderDashboard();
+  </script>
+</body>
+</html>
